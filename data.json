@@ -1,0 +1,52 @@
+{
+  "4": {
+    "1": "gato",
+    "2": "casa",
+    "3": "sol",
+    "4": "montaña",
+    "5": "libro",
+    "6": "ordenador",
+    "7": "jardín",
+    "8": "silla"
+  },
+  "5": {
+    "1": "perro",
+    "2": "techo",
+    "3": "lago",
+    "4": "nube",
+    "5": "hoja",
+    "6": "mariposa",
+    "7": "piedra",
+    "8": "cama"
+  },
+  "6": {
+    "1": "jardín",
+    "2": "luz",
+    "3": "río",
+    "4": "espejo",
+    "5": "árbol",
+    "6": "camino",
+    "7": "isla",
+    "8": "relámpago"
+  },
+  "7": {
+    "1": "nieve",
+    "2": "nube",
+    "3": "sombra",
+    "4": "cielo",
+    "5": "viento",
+    "6": "puente",
+    "7": "pájaro",
+    "8": "silencio"
+  },
+  "8": {
+    "1": "olor",
+    "2": "piedra",
+    "3": "sonrisa",
+    "4": "mano",
+    "5": "papel",
+    "6": "silla",
+    "7": "espejo",
+    "8": "canción"
+  }
+}
