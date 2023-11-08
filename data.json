@@ -1,52 +1,52 @@
 {
   "4": {
     "1": "gato",
-    "2": "casa",
-    "3": "sol",
-    "4": "montaña",
-    "5": "libro",
-    "6": "ordenador",
-    "7": "jardín",
-    "8": "silla"
+    "2": "mesa",
+    "3": "vino",
+    "4": "cama",
+    "5": "flor",
+    "6": "luna",
+    "7": "azul",
+    "8": "pera"
   },
   "5": {
     "1": "perro",
     "2": "techo",
-    "3": "lago",
-    "4": "nube",
-    "5": "hoja",
-    "6": "mariposa",
-    "7": "piedra",
-    "8": "cama"
+    "3": "libro",
+    "4": "juego",
+    "5": "pajar",
+    "6": "cielo",
+    "7": "nubes",
+    "8": "nieve"
   },
   "6": {
-    "1": "jardín",
-    "2": "luz",
-    "3": "río",
-    "4": "espejo",
-    "5": "árbol",
+    "1": "escoba",
+    "2": "rapido",
+    "3": "bosque",
+    "4": "estilo",
+    "5": "bodega",
     "6": "camino",
-    "7": "isla",
-    "8": "relámpago"
+    "7": "delfin",
+    "8": "cesped"
   },
   "7": {
-    "1": "nieve",
-    "2": "nube",
-    "3": "sombra",
-    "4": "cielo",
-    "5": "viento",
-    "6": "puente",
-    "7": "pájaro",
-    "8": "silencio"
+    "1": "arbusto",
+    "2": "esencia",
+    "3": "escuela",
+    "4": "galleta",
+    "5": "valores",
+    "6": "impacto",
+    "7": "calidad",
+    "8": "sublime"
   },
   "8": {
-    "1": "olor",
-    "2": "piedra",
-    "3": "sonrisa",
-    "4": "mano",
-    "5": "papel",
-    "6": "silla",
-    "7": "espejo",
-    "8": "canción"
+    "1": "aceituna",
+    "2": "abstraer",
+    "3": "princesa",
+    "4": "edificio",
+    "5": "proyecto",
+    "6": "machismo",
+    "7": "ladrillo",
+    "8": "pimienta"
   }
 }
