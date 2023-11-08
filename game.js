@@ -1,11 +1,11 @@
 import './style.css'
 
 // Declaración de variables y constantes
-const COUNT_WORDS = 8
+let COUNT_WORDS
 const COLUMNS = localStorage.getItem('columns') ?? 5 // Longitud de la palabra
 const ROWS = 6
-let DICTIONARY
-let DICTIONARY2
+let LEMARIO
+let LEMARIO2
 let gameFinished = false
 
 const state = {
@@ -13,28 +13,49 @@ const state = {
   grid: Array(ROWS).fill().map(() => Array(COLUMNS).fill('')),
   currentRow: 0,
   currentCol: 0,
+  letters: {},
 }
 
 // Función para obtener la información del archivo data.json donde estan guardadas las palabras
-// se puede hacer que no calcule toda la lista siempre que empiece un nuevo juego si no solo al principio
 async function getInformation(){
-  const response = await fetch('./data.json')
-  const data = await response.json()
-  DICTIONARY = Object.values(data[COLUMNS]).map(word => word.toLowerCase()) // Se puede mejorar
-  DICTIONARY2 = new Set(DICTIONARY)
+  if (localStorage.getItem('lemario') == null || localStorage.getItem('len') != COLUMNS) {
+    const response = await fetch('./data.json')
+    const data = await response.json()
+    LEMARIO = Array.from(data[COLUMNS]).map(word => word.toLowerCase()) // Se puede mejorar
+    LEMARIO2 = new Set(LEMARIO)
+    COUNT_WORDS = LEMARIO.length
+    localStorage.setItem('lemario', JSON.stringify(LEMARIO));
+    localStorage.setItem('len', COLUMNS);
+    localStorage.setItem('cw', COUNT_WORDS);
+  }else{
+    LEMARIO=JSON.parse(localStorage.getItem('lemario'))
+    LEMARIO2=new Set(LEMARIO)
+    COUNT_WORDS = localStorage.getItem('cw')
+  }
   const index = Math.floor(Math.random() * COUNT_WORDS) // Indice aleatorio
-  state.secretWord = DICTIONARY[index]
+  state.secretWord = LEMARIO[index]
+  countWords()
   startup() 
 }
 
+function countWords() {
+  let word = state.secretWord
+  state.letters={};
+  for (let i = 0; i < word.length; i++) {
+      var letter = word[i];
+      if (state.letters[letter]) {
+        state.letters[letter]++;
+      } else {
+        state.letters[letter] = 1;
+      }
+  }
+}
+
 // Función para actualizar el tablero
-// se puede mejorar (?
 function updateGrid(){ 
-  for(let x = 0; x < state.grid.length; x++){
-    for(let y = 0; y < state.grid[0].length; y++){
-      const box = document.getElementById(`box${x}${y}`)
-      box.textContent = state.grid[x][y]
-    }
+  for(let y = 0; y < state.grid[0].length; y++){
+    const box = document.getElementById(`box${state.currentRow}${y}`)
+    box.textContent = state.grid[state.currentRow][y]
   }
 }
 
@@ -113,14 +134,14 @@ function getCurrentWord(){
 // mirar bien
 // Función para verificar si la palabra existe y esta en el diccionario
 function isWordValid(word){
-  return DICTIONARY2.has(word) // Se puede mejorar 
+  return LEMARIO2.has(word) // Se puede mejorar 
 }
 
 // Función para revelar la palabra
 function revealWord(word){
   const row = state.currentRow
+  let tmp = {...state.letters}
   const animation_time = 100
-
   for(let i = 0; i < COLUMNS; i++){
     const box = document.getElementById(`box${row}${i}`)
     const letter = box.textContent
@@ -128,8 +149,10 @@ function revealWord(word){
     setTimeout(() => {
       if (letter == state.secretWord[i]){
         box.classList.add('right')
-      }else if(state.secretWord.includes(letter)){
+        tmp[letter]--;
+      }else if(state.secretWord.includes(letter) && tmp[letter]>0){
         box.classList.add('wrong')
+        tmp[letter]--;
       }else{
         box.classList.add('empty')
       }
@@ -144,11 +167,11 @@ function revealWord(word){
 
   setTimeout(() => {
     if (isWinner){
-      alert('You win!')
+      alert('Ganaste bro')
       gameFinished = true
       localStorage.setItem('wins', parseInt(localStorage.getItem('wins')) + 1);
     }else if(isGameOver){
-      alert(`Game over!, the word was ${state.secretWord}`)
+      alert(`Tan facil que era adivinar... ${state.secretWord}`)
       gameFinished = true
       localStorage.setItem('fails', parseInt(localStorage.getItem('fails')) + 1);
     }
