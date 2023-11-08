@@ -135,16 +135,19 @@ function revealWord(word){
   }
 
   const isWinner = state.secretWord === word
-  const isGameOver = state.currentRow === ROWS
+  const isGameOver = state.currentRow + 1 >= ROWS
 
   setTimeout(() => {
     if (isWinner){
       alert('You win!')
       gameFinished = true
+      localStorage.setItem('wins', parseInt(localStorage.getItem('wins')) + 1);
     }else if(isGameOver){
-      gameFinished = true
       alert(`Game over!, the word was ${state.secretWord}`)
+      gameFinished = true
+      localStorage.setItem('fails', parseInt(localStorage.getItem('fails')) + 1);
     }
+    score()
   }, (COLUMNS) * animation_time+100);
 }
 
@@ -157,4 +160,17 @@ function startup(){
 }
 
 // Acá comienza todo
+score()
 getInformation()
+
+// Función para anotar puntos
+function score(){
+  if (localStorage.getItem('wins') == null) {
+    localStorage.setItem('wins', 0);
+  }
+  if (localStorage.getItem('fails') == null) {
+    localStorage.setItem('fails', 0);
+  }
+  document.getElementById('wins').innerHTML = localStorage.getItem('wins');
+  document.getElementById('fails').innerHTML = localStorage.getItem('fails');
+}
