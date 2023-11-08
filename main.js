@@ -1,6 +1,6 @@
 import './style.css'
 
-const DIFFICULTY = 4
+const DIFFICULTY = 5
 const COUNTWORDS = 8
 const COLUMNS = 5
 const ROWS = 6
@@ -8,7 +8,7 @@ let DICTIONARY
 
 const state = {
   secretWord: '',
-  grid: Array(ROWS).fill(Array(COLUMNS).fill('')),
+  grid: Array(ROWS).fill().map(() => Array(COLUMNS).fill('')),
   currentRow: 0,
   currentCol: 0,
 }
@@ -16,8 +16,8 @@ const state = {
 async function getInformation(){
   const response = await fetch('./data.json')
   const data = await response.json()
-  DICTIONARY = data[DIFFICULTY]
-  const index = Math.floor(Math.random() * COUNTWORDS)+1
+  DICTIONARY = Object.values(data[DIFFICULTY]).map(word => word.toLowerCase())
+  const index = Math.floor(Math.random() * COUNTWORDS)
   state.secretWord = DICTIONARY[index]
   startup()
 }
@@ -56,6 +56,7 @@ function drawGrid(container){
 
 function registerKeyEvents(){
   document.body.onkeydown = (e) => {
+    if (state.currentRow >= ROWS) return
     const key = e.key
     if (key == 'Enter'){
       if (state.currentCol == COLUMNS){
@@ -118,8 +119,8 @@ function revealWord(word){
     }
   }
 
-  const isWinner = state.secretWord == word
-  const isGameOver = state.currentRow == ROWS
+  const isWinner = state.secretWord === word
+  const isGameOver = state.currentRow === ROWS
 
   if (isWinner){
     alert('You win!')
