@@ -7,8 +7,22 @@
     <title>La palabra del día</title>
   </head>
   <body>
+    <h1>Palabra del día</h1>
     <div id="game">
     </div>
+    <div class="btns">
+      <div class="btn btn1"><a href="#" onclick="reload()">Jugar otra vez</a></div>
+      <div class="btn btn2"><a href="#" onclick="home()">Escoger dificultad</a></div>
+    </div>
     <script type="module" src="/game.js"></script>
+    <script>
+      function reload(){
+        window.location.href = 'game.html';
+      }
+
+      function home(){
+        window.location.href = 'index.html';
+      }
+    </script>
   </body>
 </html>
