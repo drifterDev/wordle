@@ -1,12 +1,39 @@
 :root{
-  --background: #121213;
-  --empty: #3a3a3c;
-  --wrong: #b59f3b;
-  --right: #538d4e;
+  --background: #121212;
+  --empty: #757575;
+  --border: #424242;
+  --wrong: #E4A81D;
+  --right: #43A047;
+}
+
+.home{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  color: white;
+}
+
+.home h1{
+  font-size: 2.4rem;
+}
+
+.home p{
+  font-size: 1.6rem;
+  margin-bottom: 40px;
+}
+
+.home-container{
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 html,
 body{
+  font-family: Arial, Helvetica, sans-serif;
   background-color: var(--background);
 }
 
@@ -20,30 +47,77 @@ body{
 .grid{
   display: grid;
   grid-template-rows: repeat(6,auto);
+}
+
+.grid-4{
+  grid-template-columns: repeat(4,auto);
+}
+
+.grid-5{
   grid-template-columns: repeat(5,auto);
 }
 
-.box{
-  width: 60px;
-  height: 60px;
-  border: 2px solid var(--empty);
-  margin: 4px;
+.grid-6{
+  grid-template-columns: repeat(6,auto);
+}
+
+.grid-7{
+  grid-template-columns: repeat(7,auto);
+}
+
+.grid-8{
+  grid-template-columns: repeat(8,auto);
+}
+
+.box, .home-container>div{
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--border);
+  margin: 3px;
   color: white;
   text-transform: uppercase;
+  border-radius: 10px;
   display: grid;
   place-items: center;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 2.4rem;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.home-container>div{
+  padding: 10px;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.home-container>div:hover{
+  scale: 0.9;
 }
 
 .box.empty{
   background-color: var(--empty);
+  border: 2px solid var(--empty);
 }
 
 .box.wrong{
   background-color: var(--wrong);
+  border: 2px solid var(--wrong);
 }
 
 .box.right{
   background-color: var(--right);  
+  border: 2px solid var(--right);
+}
+
+.animated{
+  animation: flip 0.5s ease;
+}
+
+@keyframes flip {
+  0%{
+    transform: scaleY(1);
+  }50%{
+    transform: scaleY(0);
+  }100%{
+    transform: scaleY(1);
+  }
 }
