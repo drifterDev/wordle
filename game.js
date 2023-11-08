@@ -5,6 +5,7 @@ const COUNT_WORDS = 8
 const COLUMNS = localStorage.getItem('columns') ?? 5 // Longitud de la palabra
 const ROWS = 6
 let DICTIONARY
+let DICTIONARY2
 let gameFinished = false
 
 const state = {
@@ -15,16 +16,19 @@ const state = {
 }
 
 // Función para obtener la información del archivo data.json donde estan guardadas las palabras
+// se puede hacer que no calcule toda la lista siempre que empiece un nuevo juego si no solo al principio
 async function getInformation(){
   const response = await fetch('./data.json')
   const data = await response.json()
   DICTIONARY = Object.values(data[COLUMNS]).map(word => word.toLowerCase()) // Se puede mejorar
+  DICTIONARY2 = new Set(DICTIONARY)
   const index = Math.floor(Math.random() * COUNT_WORDS) // Indice aleatorio
   state.secretWord = DICTIONARY[index]
   startup() 
 }
 
 // Función para actualizar el tablero
+// se puede mejorar (?
 function updateGrid(){ 
   for(let x = 0; x < state.grid.length; x++){
     for(let y = 0; y < state.grid[0].length; y++){
@@ -106,9 +110,10 @@ function getCurrentWord(){
   return state.grid[state.currentRow].join('') // Se puede mejorar (?)
 }
 
+// mirar bien
 // Función para verificar si la palabra existe y esta en el diccionario
 function isWordValid(word){
-  return DICTIONARY.includes(word) // Se puede mejorar 
+  return DICTIONARY2.has(word) // Se puede mejorar 
 }
 
 // Función para revelar la palabra
