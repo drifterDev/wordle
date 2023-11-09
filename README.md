@@ -48,7 +48,7 @@ Antes de comenzar, asegúrate de tener instalado `npm` en tu sistema. Si no lo t
 
 Aprecio cualquier sugerencia para mejorar el contenido de este proyecto. Si deseas contribuir, por favor crea un "issue" en el repositorio o contáctame directamente. Valoraré tus aportes para mejorar este repositorio.
 
-## Autores ✒️
+## Autores 
 
 * **Mateo Álvarez Murillo** [drifterDev](https://github.com/drifterDev)
 * **Efrain Gomez Ramirez** [EfraGR](https://github.com/EfraGR)
