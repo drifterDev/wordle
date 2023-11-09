@@ -1,11 +1,11 @@
 import './style.css'
 
 // Declaración de variables y constantes
-let COUNT_WORDS
 const COLUMNS = localStorage.getItem('columns') ?? 5 // Longitud de la palabra
 const ROWS = 6
 let LEMARIO
 let LEMARIO2
+let COUNT_WORDS
 let gameFinished = false
 
 const state = {
@@ -181,24 +181,28 @@ function revealWord(word){
 
 // Función para iniciar el juego
 function startup(){
+  console.log(state.secretWord)
   const game = document.getElementById('game')
   drawGrid(game)
-  console.log(state.secretWord)
   registerKeyEvents()
 }
 
-// Acá comienza todo
-score()
-getInformation()
-
 // Función para anotar puntos
 function score(){
-  if (localStorage.getItem('wins') == null) {
+  if (localStorage.getItem('wins') == null || localStorage.getItem('fails') == null) {
     localStorage.setItem('wins', 0);
-  }
-  if (localStorage.getItem('fails') == null) {
     localStorage.setItem('fails', 0);
   }
   document.getElementById('wins').innerHTML = localStorage.getItem('wins');
   document.getElementById('fails').innerHTML = localStorage.getItem('fails');
 }
+
+const reload = document.getElementById('reload')
+const home = document.getElementById('home')
+
+reload.addEventListener('click', () => window.location.href = 'game.html')
+home.addEventListener('click', () =>  window.location.href = 'index.html')
+
+// Acá comienza todo
+score()
+getInformation()

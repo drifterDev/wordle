@@ -14,39 +14,15 @@
     <h1>Palabra del día</h1>
     <p>¡Selecciona una dificultad para empezar!</p>
     <div class="home-container">
-      <div onclick="begin(4)">4</div>
-      <div onclick="begin(5)">5</div>
-      <div onclick="begin(6)">6</div>
-      <div onclick="begin(7)">7</div>
-      <div onclick="begin(8)">8</div>
+      <div class="div">4</div>
+      <div class="div">5</div>
+      <div class="div">6</div>
+      <div class="div">7</div>
+      <div class="div">8</div>
     </div>
     <div class="btns">
-      <div class="btn btn2" id="tmp"><a href="#" onclick="deleteScore()">Reiniciar puntos</a></div>
+      <div class="btn btn2"><a href="#" id="reset">Reiniciar puntos</a></div>
     </div>
     <script type="module" src="/index.js"></script>
-    <script>
-      score();
-      function begin(value){
-        localStorage.setItem('columns', value);
-        window.location.href = 'game.html';
-      }
-
-      function score(){
-        if (localStorage.getItem('wins') == null) {
-          localStorage.setItem('wins', 0);
-        }
-        if (localStorage.getItem('fails') == null) {
-          localStorage.setItem('fails', 0);
-        }
-        document.getElementById('wins').innerHTML = localStorage.getItem('wins');
-        document.getElementById('fails').innerHTML = localStorage.getItem('fails');
-      }
-
-      function deleteScore(){
-        localStorage.setItem('wins', 0);
-        localStorage.setItem('fails', 0);
-        score();
-      }
-    </script>
   </body>
 </html>
