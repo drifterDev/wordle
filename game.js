@@ -24,9 +24,9 @@ async function getInformation(){
     LEMARIO = Array.from(data[COLUMNS]).map(word => word.toLowerCase()) // Se puede mejorar
     LEMARIO2 = new Set(LEMARIO)
     COUNT_WORDS = LEMARIO.length
-    localStorage.setItem('lemario', JSON.stringify(LEMARIO));
-    localStorage.setItem('len', COLUMNS);
-    localStorage.setItem('cw', COUNT_WORDS);
+    localStorage.setItem('lemario', JSON.stringify(LEMARIO))
+    localStorage.setItem('len', COLUMNS)
+    localStorage.setItem('cw', COUNT_WORDS)
   }else{
     LEMARIO=JSON.parse(localStorage.getItem('lemario'))
     LEMARIO2=new Set(LEMARIO)
@@ -40,13 +40,13 @@ async function getInformation(){
 
 function countWords() {
   let word = state.secretWord
-  state.letters={};
+  state.letters={}
   for (let i = 0; i < word.length; i++) {
-      var letter = word[i];
+      var letter = word[i]
       if (state.letters[letter]) {
-        state.letters[letter]++;
+        state.letters[letter]++
       } else {
-        state.letters[letter] = 1;
+        state.letters[letter] = 1
       }
   }
 }
@@ -156,7 +156,7 @@ function revealWord(word){
       }else{
         box.classList.add('empty')
       }
-    }, ((i+1) * animation_time));
+    }, ((i+1) * animation_time))
 
     box.classList.add('animated')
     box.style.animationDelay = `${(animation_time * i)}ms`
@@ -169,14 +169,14 @@ function revealWord(word){
     if (isWinner){
       alert('Ganaste bro')
       gameFinished = true
-      localStorage.setItem('wins', parseInt(localStorage.getItem('wins')) + 1);
+      localStorage.setItem('wins', parseInt(localStorage.getItem('wins')) + 1)
     }else if(isGameOver){
       alert(`Tan facil que era adivinar... ${state.secretWord}`)
       gameFinished = true
-      localStorage.setItem('fails', parseInt(localStorage.getItem('fails')) + 1);
+      localStorage.setItem('fails', parseInt(localStorage.getItem('fails')) + 1)
     }
     score()
-  }, (COLUMNS) * animation_time+100);
+  }, (COLUMNS) * animation_time+100)
 }
 
 // Función para iniciar el juego
@@ -190,11 +190,11 @@ function startup(){
 // Función para anotar puntos
 function score(){
   if (localStorage.getItem('wins') == null || localStorage.getItem('fails') == null) {
-    localStorage.setItem('wins', 0);
-    localStorage.setItem('fails', 0);
+    localStorage.setItem('wins', 0)
+    localStorage.setItem('fails', 0)
   }
-  document.getElementById('wins').innerHTML = localStorage.getItem('wins');
-  document.getElementById('fails').innerHTML = localStorage.getItem('fails');
+  document.getElementById('wins').innerHTML = localStorage.getItem('wins')
+  document.getElementById('fails').innerHTML = localStorage.getItem('fails')
 }
 
 const reload = document.getElementById('reload')
