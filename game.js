@@ -53,6 +53,7 @@ function countWords() {
 
 // Función para actualizar el tablero
 function updateGrid(){ 
+  if (state.currentRow >= ROWS) return
   for(let y = 0; y < state.grid[0].length; y++){
     const box = document.getElementById(`box${state.currentRow}${y}`)
     box.textContent = state.grid[state.currentRow][y]
@@ -95,7 +96,7 @@ function registerKeyEvents(){
           state.currentCol = 0
           state.currentRow++
         }else{
-          alert('Invalid word')
+          alert('Palabra inválida')
         }
       }
     }else if(key == 'Backspace'){
@@ -164,15 +165,14 @@ function revealWord(word){
 
   const isWinner = state.secretWord === word
   const isGameOver = state.currentRow + 1 >= ROWS
+  gameFinished = isWinner || isGameOver 
 
   setTimeout(() => {
     if (isWinner){
       alert('Ganaste bro')
-      gameFinished = true
       localStorage.setItem('wins', parseInt(localStorage.getItem('wins')) + 1)
     }else if(isGameOver){
       alert(`Tan facil que era adivinar... ${state.secretWord}`)
-      gameFinished = true
       localStorage.setItem('fails', parseInt(localStorage.getItem('fails')) + 1)
     }
     score()
