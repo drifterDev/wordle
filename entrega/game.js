@@ -1,4 +1,4 @@
-import { Trie, TrieNode} from "./trie"
+import {Trie} from "./trie.js"
 
 // Declaración de variables y constantes
 
@@ -22,19 +22,18 @@ async function getInformation(){
   if (localStorage.getItem('lemario') == null || localStorage.getItem('len') != COLUMNS) {
     const response = await fetch('./data.json')
     const data = await response.json()
-    LEMARIO = Array.from(data[COLUMNS]).map(word => word.toLowerCase()) // Se puede mejorar
-    LEMARIO2 = new Set(LEMARIO)
+    LEMARIO = Array.from(data[COLUMNS]).map(word => word.toLowerCase())
     COUNT_WORDS = LEMARIO.length
     localStorage.setItem('lemario', JSON.stringify(LEMARIO))
     localStorage.setItem('len', COLUMNS)
     localStorage.setItem('cw', COUNT_WORDS)
   }else{
     LEMARIO=JSON.parse(localStorage.getItem('lemario'))
-    LEMARIO2= new Trie()
-    for (let word of LEMARIO){
-      LEMARIO2.insert(word)
-    }
     COUNT_WORDS = localStorage.getItem('cw')
+  }
+  LEMARIO2= new Trie()
+  for (let word of LEMARIO){
+    LEMARIO2.insert(word)
   }
   selectWord()
   countLetters()
@@ -161,13 +160,12 @@ function removeLetter(){
 
 // Función para obtener la palabra actual
 function getCurrentWord(){
-  return state.grid[state.currentRow].join('') // Se puede mejorar (?)
+  return state.grid[state.currentRow].join('') 
 }
 
-// mirar bien
 // Función para verificar si la palabra existe y esta en el diccionario
 function isWordValid(word){
-  return LEMARIO2.search(word) // Se puede mejorar 
+  return LEMARIO2.search(word) 
 }
 
 // Función para revelar la palabra
@@ -204,7 +202,7 @@ function revealWord(word){
       alert('Ganaste bro')
       localStorage.setItem('wins', parseInt(localStorage.getItem('wins')) + 1)
     }else if(isGameOver){
-      alert(`Tan facil que era adivinar... ${state.secretWord}`)
+      alert(`Tan facil que era adivinar... ${state.secretWord}?`)
       localStorage.setItem('fails', parseInt(localStorage.getItem('fails')) + 1)
     }
     score()
