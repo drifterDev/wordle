@@ -1,4 +1,7 @@
+import { Trie, TrieNode} from "./trie"
+
 // Declaración de variables y constantes
+
 const COLUMNS = localStorage.getItem('columns') ?? 5 // Longitud de la palabra
 const ROWS = 6
 let LEMARIO
@@ -27,7 +30,10 @@ async function getInformation(){
     localStorage.setItem('cw', COUNT_WORDS)
   }else{
     LEMARIO=JSON.parse(localStorage.getItem('lemario'))
-    LEMARIO2=new Set(LEMARIO)
+    LEMARIO2= new Trie()
+    for (let word of LEMARIO){
+      LEMARIO2.insert(word)
+    }
     COUNT_WORDS = localStorage.getItem('cw')
   }
   selectWord()
@@ -161,7 +167,7 @@ function getCurrentWord(){
 // mirar bien
 // Función para verificar si la palabra existe y esta en el diccionario
 function isWordValid(word){
-  return LEMARIO2.has(word) // Se puede mejorar 
+  return LEMARIO2.search(word) // Se puede mejorar 
 }
 
 // Función para revelar la palabra

@@ -1,11 +1,11 @@
-class TrieNode {
+export class TrieNode {
     constructor() {
       this.children = {};
       this.isEndOfWord = false;
     }
   }
   
-  class Trie {
+  export class Trie{
     constructor() {
       this.root = new TrieNode();
       this.count = 0;
@@ -45,33 +45,6 @@ class TrieNode {
         node = node.children[char];
       }
       return Object.keys(node.children).length > 0;
-    }
-  
-    delete(word) {
-      const q = [];
-      let node = this.root;
-      for (let char of word) {
-        if (!(char in node.children)) {
-          return false;
-        } else {
-          q.push(node);
-          node = node.children[char];
-        }
-      }
-      if (Object.keys(node.children).length > 0) {
-        node.isEndOfWord = false;
-      } else {
-        for (let char of word.split('').reverse()) {
-          node = q.pop();
-          if (node.isEndOfWord || Object.keys(node.children).length > 1) {
-            break;
-          } else {
-            delete node.children[char];
-          }
-        }
-        this.count -= 1;
-        return true;
-      }
     }
   
     _traverseRecursively(node, currentWord, wordsList) {
