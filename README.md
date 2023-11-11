@@ -14,29 +14,11 @@ La idea de este proyecto es crear una versión del juego [Wordle](https://lapala
    git clone https://github.com/drifterDev/wordle.git
    ```
 
+2. Abre la carpeta del proyecto `entrega` en tu navegador web y comienza a jugar.
+
 ### Prerrequisitos 
 
 Antes de comenzar, asegúrate de tener instalado `npm` en tu sistema. Si no lo tienes instalado, puedes descargarlo e instalarlo desde [el sitio web oficial de Node.js](https://nodejs.org/).
-
-### Instalación 
-
-1. Descargar las dependencias necesarias del proyecto:
-
-   ```bash
-   npm install
-   ```
-
-2. Correr el comando para construir el proyecto:
-
-   ```bash
-   npm run build
-   ```
-
-3. Levantar un servidor local para previsualizar el proyecto:
-
-   ```bash
-   npm run preview
-   ```
 
 ## Construido con 
 
