@@ -14,7 +14,16 @@ La idea de este proyecto es crear una versión del juego [Wordle](https://lapala
    git clone https://github.com/drifterDev/wordle.git
    ```
 
-2. Abre la carpeta del proyecto `entrega` en tu navegador web y comienza a jugar.
+2. Abre la carpeta del proyecto `entrega/index` en tu navegador web y comienza a jugar.
+
+3. Si tienes problemas para abrir el proyecto en tu navegador, puedes instalar [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) en tu editor de código favorito y abrir el proyecto desde ahí.
+
+4. Si tienes npm instalado en tu sistema, puedes instalar las dependencias del proyecto y ejecutarlo en modo desarrollo:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
 
 ### Prerrequisitos 
 
