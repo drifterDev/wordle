@@ -1,4 +1,4 @@
-import stye from './style.css'
+import '../css/style.css'
 
 const divs = document.querySelectorAll('.div')
 const reset = document.getElementById('reset')

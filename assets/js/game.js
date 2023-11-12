@@ -1,4 +1,5 @@
-import './style.css'
+import '../css/style.css'
+import {Trie} from "./trie.js"
 
 // Declaración de variables y constantes
 const COLUMNS = localStorage.getItem('columns') ?? 5 // Longitud de la palabra
@@ -6,7 +7,6 @@ const ROWS = 6
 let LEMARIO
 let LEMARIO2
 let COUNT_WORDS
-let gameFinished = false
 
 const state = {
   secretWord: '',
@@ -14,6 +14,7 @@ const state = {
   currentRow: 0,
   currentCol: 0,
   letters: {},
+  gameFinished: false
 }
 
 // Función para obtener la información del archivo data.json donde estan guardadas las palabras
@@ -21,24 +22,31 @@ async function getInformation(){
   if (localStorage.getItem('lemario') == null || localStorage.getItem('len') != COLUMNS) {
     const response = await fetch('./data.json')
     const data = await response.json()
-    LEMARIO = Array.from(data[COLUMNS]).map(word => word.toLowerCase()) // Se puede mejorar
-    LEMARIO2 = new Set(LEMARIO)
+    LEMARIO = Array.from(data[COLUMNS]).map(word => word.toLowerCase())
     COUNT_WORDS = LEMARIO.length
     localStorage.setItem('lemario', JSON.stringify(LEMARIO))
     localStorage.setItem('len', COLUMNS)
     localStorage.setItem('cw', COUNT_WORDS)
   }else{
     LEMARIO=JSON.parse(localStorage.getItem('lemario'))
-    LEMARIO2=new Set(LEMARIO)
     COUNT_WORDS = localStorage.getItem('cw')
   }
-  const index = Math.floor(Math.random() * COUNT_WORDS) // Indice aleatorio
-  state.secretWord = LEMARIO[index]
-  countWords()
+  LEMARIO2= new Trie()
+  for (let word of LEMARIO){
+    LEMARIO2.insert(word)
+  }
+  selectWord()
+  countLetters()
   startup() 
 }
 
-function countWords() {
+// Función para seleccionar la palabra secreta
+function selectWord(){
+  const index = Math.floor(Math.random() * COUNT_WORDS) // Indice aleatorio
+  state.secretWord = LEMARIO[index]
+}
+
+function countLetters() {
   let word = state.secretWord
   state.letters={}
   for (let i = 0; i < word.length; i++) {
@@ -58,6 +66,29 @@ function updateGrid(){
     const box = document.getElementById(`box${state.currentRow}${y}`)
     box.textContent = state.grid[state.currentRow][y]
   }
+}
+
+// Función para resetear el tablero
+function resetGrid(){
+  state.grid = Array(ROWS).fill().map(() => Array(COLUMNS).fill(''))
+  state.currentRow = 0
+  state.currentCol = 0
+  state.gameFinished = false
+  const boxes = document.getElementsByClassName('box')
+  for(let i = 0; i < boxes.length; i++){
+    const box = boxes[i]
+    box.textContent = ''
+    box.classList.remove('right')
+    box.classList.remove('wrong')
+    box.classList.remove('empty')
+    box.classList.remove('animated')
+    box.style.animationDelay = '0ms'
+  }
+  selectWord()
+  countLetters()
+  updateGrid()
+  registerKeyEvents()
+  console.log(state.secretWord)
 }
 
 // Función para dibujar cada caja del tablero
@@ -86,7 +117,7 @@ function drawGrid(container){
 // Función para obtener las teclas presionadas
 function registerKeyEvents(){
   document.body.onkeydown = (e) => {
-    if (state.currentRow >= ROWS || gameFinished) return
+    if (state.currentRow >= ROWS || state.gameFinished) return
     const key = e.key
     if (key == 'Enter'){
       if (state.currentCol == COLUMNS){
@@ -129,13 +160,12 @@ function removeLetter(){
 
 // Función para obtener la palabra actual
 function getCurrentWord(){
-  return state.grid[state.currentRow].join('') // Se puede mejorar (?)
+  return state.grid[state.currentRow].join('') 
 }
 
-// mirar bien
 // Función para verificar si la palabra existe y esta en el diccionario
 function isWordValid(word){
-  return LEMARIO2.has(word) // Se puede mejorar 
+  return LEMARIO2.search(word) 
 }
 
 // Función para revelar la palabra
@@ -165,14 +195,14 @@ function revealWord(word){
 
   const isWinner = state.secretWord === word
   const isGameOver = state.currentRow + 1 >= ROWS
-  gameFinished = isWinner || isGameOver 
+  state.gameFinished = isWinner || isGameOver 
 
   setTimeout(() => {
     if (isWinner){
       alert('Ganaste bro')
       localStorage.setItem('wins', parseInt(localStorage.getItem('wins')) + 1)
     }else if(isGameOver){
-      alert(`Tan facil que era adivinar... ${state.secretWord}`)
+      alert(`Tan facil que era adivinar... ${state.secretWord}?`)
       localStorage.setItem('fails', parseInt(localStorage.getItem('fails')) + 1)
     }
     score()
@@ -200,7 +230,7 @@ function score(){
 const reload = document.getElementById('reload')
 const home = document.getElementById('home')
 
-reload.addEventListener('click', () => window.location.href = 'game.html')
+reload.addEventListener('click', resetGrid)
 home.addEventListener('click', () =>  window.location.href = 'index.html')
 
 // Acá comienza todo
