@@ -79,6 +79,7 @@ function resetGrid(){
   state.currentCol = 0
   const boxes = document.getElementsByClassName('box')
   for (let box of boxes) {
+    box.textContent = ''
     box.classList.remove('right', 'wrong', 'empty', 'animated')
     box.style.animationDelay = '0ms'
   }
