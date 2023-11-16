@@ -173,6 +173,14 @@ function revealWord(word){
   const row = state.currentRow
   let tmp = {...state.letters}
   const animation_time = 100
+  for(let j = 0; j < COLUMNS; j++){
+    const box1 = document.getElementById(`box${row}${j}`)
+    const letter1 = box1.textContent
+    if (letter1 == state.secretWord[j]){
+      tmp[letter1]--;
+    }
+  }
+
   for(let i = 0; i < COLUMNS; i++){
     const box = document.getElementById(`box${row}${i}`)
     const letter = box.textContent
@@ -180,7 +188,6 @@ function revealWord(word){
     setTimeout(() => {
       if (letter == state.secretWord[i]){
         box.classList.add('right')
-        tmp[letter]--;
       }else if(state.secretWord.includes(letter) && tmp[letter]>0){
         box.classList.add('wrong')
         tmp[letter]--;
