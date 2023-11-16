@@ -19,19 +19,19 @@ const state = {
 
 // Función para obtener la información del archivo data.json donde estan guardadas las palabras
 async function getInformation(){
-  if (localStorage.getItem('lemario') == null || localStorage.getItem('len') != COLUMNS) {
+  if (localStorage.getItem('lemario') == null || localStorage.getItem('cols') != COLUMNS) {
     const response = await fetch('./data.json')
     const data = await response.json()
     LEMARIO = Array.from(data[COLUMNS]).map(word => word.toLowerCase())
     COUNT_WORDS = LEMARIO.length
     localStorage.setItem('lemario', JSON.stringify(LEMARIO))
-    localStorage.setItem('len', COLUMNS)
-    localStorage.setItem('cw', COUNT_WORDS)
+    localStorage.setItem('count_words', COUNT_WORDS)
+    localStorage.setItem('cols', COLUMNS)
   }else{
     LEMARIO=JSON.parse(localStorage.getItem('lemario'))
-    COUNT_WORDS = localStorage.getItem('cw')
+    COUNT_WORDS = localStorage.getItem('count_words')
   }
-  LEMARIO2= new Trie()
+  LEMARIO2 = new Trie()
   for (let word of LEMARIO){
     LEMARIO2.insert(word)
   }
@@ -44,12 +44,15 @@ async function getInformation(){
 function selectWord(){
   const index = Math.floor(Math.random() * COUNT_WORDS) // Indice aleatorio
   state.secretWord = LEMARIO[index]
+  console.log(state.secretWord)
 }
 
 function countLetters() {
-  let word = state.secretWord
+  const word = state.secretWord
+  const LENGTH = word.length
   state.letters={}
-  for (let i = 0; i < word.length; i++) {
+
+  for (let i = 0; i < LENGTH; i++) {
       var letter = word[i]
       if (state.letters[letter]) {
         state.letters[letter]++
@@ -62,7 +65,7 @@ function countLetters() {
 // Función para actualizar el tablero
 function updateGrid(){ 
   if (state.currentRow >= ROWS) return
-  for(let y = 0; y < state.grid[0].length; y++){
+  for(let y = 0; y < COLUMNS; y++){
     const box = document.getElementById(`box${state.currentRow}${y}`)
     box.textContent = state.grid[state.currentRow][y]
   }
@@ -71,24 +74,18 @@ function updateGrid(){
 // Función para resetear el tablero
 function resetGrid(){
   state.grid = Array(ROWS).fill().map(() => Array(COLUMNS).fill(''))
+  state.gameFinished = false
   state.currentRow = 0
   state.currentCol = 0
-  state.gameFinished = false
   const boxes = document.getElementsByClassName('box')
-  for(let i = 0; i < boxes.length; i++){
-    const box = boxes[i]
-    box.textContent = ''
-    box.classList.remove('right')
-    box.classList.remove('wrong')
-    box.classList.remove('empty')
-    box.classList.remove('animated')
+  for (let box of boxes) {
+    box.classList.remove('right', 'wrong', 'empty', 'animated')
     box.style.animationDelay = '0ms'
   }
+  updateGrid()
   selectWord()
   countLetters()
-  updateGrid()
   registerKeyEvents()
-  console.log(state.secretWord)
 }
 
 // Función para dibujar cada caja del tablero
@@ -119,16 +116,14 @@ function registerKeyEvents(){
   document.body.onkeydown = (e) => {
     if (state.currentRow >= ROWS || state.gameFinished) return
     const key = e.key
-    if (key == 'Enter'){
-      if (state.currentCol == COLUMNS){
-        const word = getCurrentWord()
-        if (isWordValid(word)){
-          revealWord(word)
-          state.currentCol = 0
-          state.currentRow++
-        }else{
-          alert('Palabra inválida')
-        }
+    if (key == 'Enter' && state.currentCol == COLUMNS){
+      const word = getCurrentWord()
+      if (isWordValid(word)){
+        revealWord(word)
+        state.currentCol = 0
+        state.currentRow++
+      }else{
+        alert('Palabra inválida')
       }
     }else if(key == 'Backspace'){
       removeLetter()
@@ -141,13 +136,13 @@ function registerKeyEvents(){
 
 // Función para verificar si la tecla presionada es una letra
 function isletter(key){
-  return key.length == 1 && key.match(/[a-z]/i)
+  return key.length == 1 && key.match(/[a-zA-Z]/i)
 }
 
 // Función para agregar una letra a la fila actual
 function addLetter(letter){
   if (state.currentCol == COLUMNS) return
-  state.grid[state.currentRow][state.currentCol] = letter
+  state.grid[state.currentRow][state.currentCol] = letter.toLowerCase()
   state.currentCol++
 }
 
@@ -170,14 +165,14 @@ function isWordValid(word){
 
 // Función para revelar la palabra
 function revealWord(word){
+  const animation_time = 100
   const row = state.currentRow
   let tmp = {...state.letters}
-  const animation_time = 100
   for(let j = 0; j < COLUMNS; j++){
-    const box1 = document.getElementById(`box${row}${j}`)
-    const letter1 = box1.textContent
-    if (letter1 == state.secretWord[j]){
-      tmp[letter1]--;
+    const box = document.getElementById(`box${row}${j}`)
+    const letter = box.textContent
+    if (letter == state.secretWord[j]){
+      tmp[letter]--
     }
   }
 
@@ -203,7 +198,6 @@ function revealWord(word){
   const isWinner = state.secretWord === word
   const isGameOver = state.currentRow + 1 >= ROWS
   state.gameFinished = isWinner || isGameOver 
-
   setTimeout(() => {
     if (isWinner){
       alert('Ganaste bro')
@@ -218,7 +212,6 @@ function revealWord(word){
 
 // Función para iniciar el juego
 function startup(){
-  console.log(state.secretWord)
   const game = document.getElementById('game')
   drawGrid(game)
   registerKeyEvents()
