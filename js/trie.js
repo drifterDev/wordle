@@ -5,7 +5,7 @@ class TrieNode {
   }
 }
 
-export class Trie{
+export class Trie {
   constructor() {
     this.root = new TrieNode();
     this.count = 0;
